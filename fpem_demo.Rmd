@@ -1,0 +1,55 @@
+---
+title: "Estimating family-planning indicators with FPEM"
+author: "Herb Susmann"
+date: "10/4/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+```
+
+First, install the `fpemlocal` from Github:
+```{r install, eval = FALSE}
+remotes::install_github("AlkemaLab/fpemlocal")
+```
+
+```{r}
+library(fpemlocal)
+```
+
+```{r}
+divisions %>%
+  select(division_numeric_code, name_country)
+```
+
+```{r}
+divisions %>%
+  filter(name_country == "Bangladesh") %>%
+  select(division_numeric_code, name_country)
+```
+
+```{r}
+fit <- fit_fp_c(
+  division_numeric_code = 50,
+  is_in_union = "Y",
+  first_year = 1970,
+  last_year = 2030
+)
+```
+
+```{r}
+results <- calc_fp_c(fit)
+```
+
+```{r}
+plot_fp_c(
+  fit,
+  results,
+  indicators = c("contraceptive_use_modern")
+)
+```
